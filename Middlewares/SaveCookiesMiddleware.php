@@ -23,7 +23,7 @@ class SaveCookiesMiddleware implements MiddlewareInterface {
 	/**
 	 * {@inheritdoc}
 	 */
-	function process(RequestInterface $request, array $arguments, RequestHandlerInterface $handler): ResponseInterface {
+	function process(RequestInterface $request, RequestHandlerInterface $handler, ...$arguments): ResponseInterface {
 		$response = $handler->handle($request, $arguments);
 		foreach ($this->cookies->getCookies() as $cookie) {
 			$response->setCookie($cookie);
