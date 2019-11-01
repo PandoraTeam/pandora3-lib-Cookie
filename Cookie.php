@@ -12,30 +12,30 @@ class Cookie {
 	public $name;
 
 	/** @var string|null $value */
-    public $value;
+	public $value;
 
-    /** @var int $expire */
-    public $expire;
+	/** @var int $expire */
+	public $expire;
 
-    /** @var string $path */
-    public $path;
+	/** @var string $path */
+	public $path;
 
-    /** @var string|null $domain */
-    public $domain;
+	/** @var string|null $domain */
+	public $domain;
 
-    /** @var bool $isSecure */
-    public $isSecure;
+	/** @var bool $isSecure */
+	public $isSecure;
 
-    /** @var bool $isHttpOnly */
-    public $isHttpOnly;
+	/** @var bool $isHttpOnly */
+	public $isHttpOnly;
 
-    /** @var string|null $sameSite */
-    public $sameSite;
+	/** @var string|null $sameSite */
+	public $sameSite;
 
-    const SAME_SITE_LAX = 'Lax';
-    const SAME_SITE_STRICT = 'Strict';
+	const SAME_SITE_LAX = 'Lax';
+	const SAME_SITE_STRICT = 'Strict';
 
-    public function __construct(string $name, ?string $value = null, array $params = []) {
+	public function __construct(string $name, ?string $value = null, array $params = []) {
 		if (!$name) {
 			throw new \LogicException('Cookie name is empty');
 		}
@@ -44,32 +44,32 @@ class Cookie {
 			throw new \LogicException("Cookie name '$name' contains invalid characters");
 		}
 
-    	$sameSite = $params['sameSite'] ?? null;
+		$sameSite = $params['sameSite'] ?? null;
 		if (!\in_array($sameSite, [self::SAME_SITE_LAX, self::SAME_SITE_STRICT, null], true)) {
 			throw new \LogicException("Cookie parameter 'sameSite' has wrong value");
 		}
 
-    	$this->name = $name;
-    	$this->value = $value;
+		$this->name = $name;
+		$this->value = $value;
 
-    	$expire = $params['expire'] ?? 0;
-    	if ($expire instanceof \DateTimeInterface) {
-    		$expire = $expire->getTimestamp();
+		$expire = $params['expire'] ?? 0;
+		if ($expire instanceof \DateTimeInterface) {
+			$expire = $expire->getTimestamp();
 		} else if (!is_numeric($expire)) {
-            $expire = strtotime($expire);
+			$expire = strtotime($expire);
 			if ($expire === false) {
 				throw new \LogicException("Cookie parameter 'expire' has wrong value");
 			}
 		}
-    	$this->expire = ($expire > 0)
-    		? (int) $expire
-    		: 0;
+		$this->expire = ($expire > 0)
+			? (int) $expire
+			: 0;
 
-    	$this->path = $params['path'] ?? '/';
-    	$this->domain = $params['domain'] ?? null;
-    	$this->isSecure = $params['isSecure'] ?? false;
-    	$this->isHttpOnly = $params['isHttpOnly'] ?? true;
-    	$this->sameSite = $sameSite;
+		$this->path = $params['path'] ?? '/';
+		$this->domain = $params['domain'] ?? null;
+		$this->isSecure = $params['isSecure'] ?? false;
+		$this->isHttpOnly = $params['isHttpOnly'] ?? true;
+		$this->sameSite = $sameSite;
 	}
 
 	public function getMaxAge(): int {
