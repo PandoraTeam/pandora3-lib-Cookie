@@ -84,11 +84,13 @@ class Cookie {
 		if (is_null($value) || $value === '') {
 			$expire = gmdate('D, d-M-Y H:i:s T', time() - 31536001); // 'Thu, 01 Jan 1970 00:00:00 GMT';
 			$result .= "deleted; Expires={$expire}; Max-Age=0";
-		} else if ($this->expire > 0) {
-			$expire = gmdate('D, d-M-Y H:i:s T', $this->expire);
-			$maxAge = $this->getMaxAge();
-			$value = rawurlencode($value);
-			$result .= "{$value}; Expires={$expire}; Max-Age={$maxAge}";
+		} else {
+			$result .= rawurlencode($value);
+			if ($this->expire > 0) {
+				$expire = gmdate('D, d-M-Y H:i:s T', $this->expire);
+				$maxAge = $this->getMaxAge();
+				$result .= "; Expires={$expire}; Max-Age={$maxAge}";
+			}
 		}
 
 		if ($this->path) {
